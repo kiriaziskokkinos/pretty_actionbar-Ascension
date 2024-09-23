@@ -297,7 +297,7 @@ local function setupMicroButtons(xOffset)
 
 		button:SetParent(pUiMicroMenu)
 		-- button:SetScale(1.4)
-		button:SetSize(14, 19)
+		button:SetSize(10, 14)
 		button:SetClearPoint('BOTTOMLEFT', pUiMicroMenu, 'BOTTOMRIGHT', buttonxOffset, 55)
 		button.SetPoint = addon._noop
 		button:SetHitRectInsets(0,0,0,0)
@@ -308,7 +308,7 @@ local function setupMicroButtons(xOffset)
 		button:GetHighlightTexture():set_atlas('ui-hud-micromenu-'..name..'-mouseover-2x')
 		button:GetHighlightTexture():SetBlendMode('ADD')
 
-		buttonxOffset = buttonxOffset + 15
+		buttonxOffset = buttonxOffset + 11
 	end
 end
 
