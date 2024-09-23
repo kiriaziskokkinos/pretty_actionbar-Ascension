@@ -308,7 +308,7 @@ local function setupMicroButtons(xOffset)
 		button:GetHighlightTexture():set_atlas('ui-hud-micromenu-'..name..'-mouseover-2x')
 		button:GetHighlightTexture():SetBlendMode('ADD')
 
-		buttonxOffset = buttonxOffset + 15
+		buttonxOffset = buttonxOffset + 24
 	end
 end
 
