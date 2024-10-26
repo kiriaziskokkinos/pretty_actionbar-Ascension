@@ -381,7 +381,7 @@ do
         end
     end
 
-    local WaitFrame = _G.KPack_WaitFrame or CreateFrame("Frame", "KPack_WaitFrame", UIParent)
+    local WaitFrame = _G.WaitFrame or CreateFrame("Frame", "WaitFrame", UIParent)
     WaitFrame:SetScript("OnUpdate", WaitFunc)
 
     local function AddDelayedCall(ticker, oldTicker)
@@ -443,7 +443,7 @@ do
         if ticker and ticker.Cancel then
             ticker:Cancel()
         elseif not silent then
-            error("KPack.CancelTimer(timer[, silent]): '" .. tostring(ticker) .. "' - no such timer registered")
+            error("CancelTimer(timer[, silent]): '" .. tostring(ticker) .. "' - no such timer registered")
         end
         return nil
     end

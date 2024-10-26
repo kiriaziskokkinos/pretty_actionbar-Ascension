@@ -13,7 +13,7 @@ addon.config = {
 	micromenu = {
 	-- @desc: micromenu & bags bar
 	-- @param: number, boolean
-		scale_menu = 1.4,				--; scale for micromenu.
+		scale_menu = 0.7,				--; scale for micromenu.
 		scale_bags = 0.9,				--; scale for bags bar.
 		x_position = -85,					--; x offset (negative moves menu to left side).
 		y_position = -48,				--; y offset.
