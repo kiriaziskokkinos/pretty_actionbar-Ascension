@@ -1,7 +1,7 @@
 local addon = select(2,...);
 local config = addon.config;
 local pairs = pairs;
-local gsub = string.gsub;
+--local gsub = string.gsub;
 local UIParent = UIParent;
 local hooksecurefunc = hooksecurefunc;
 local _G = _G;
@@ -16,12 +16,14 @@ local HelpMicroButton = _G.HelpMicroButton;
 local KeyRingButton = _G.KeyRingButton;
 
 local bagslots = {
-    _G.CharacterBag0Slot,
-    _G.CharacterBag1Slot,
-    _G.CharacterBag2Slot,
-    _G.CharacterBag3Slot
+	_G.CharacterBag0Slot,
+	_G.CharacterBag1Slot,
+	_G.CharacterBag2Slot,
+	_G.CharacterBag3Slot
 };
 local MICRO_BUTTONS = {
+	_G.PathToAscensionMicroButton,
+	_G.ChallengesMicroButton,
 	_G.CharacterMicroButton,
 	_G.SpellbookMicroButton,
 	_G.TalentMicroButton,
@@ -30,14 +32,14 @@ local MICRO_BUTTONS = {
 	_G.SocialsMicroButton,
 	_G.LFDMicroButton,
 	_G.CollectionsMicroButton,
-	_G.PVPMicroButton,
+	--_G.PVPMicroButton,
 	_G.MainMenuMicroButton,
 	_G.HelpMicroButton,
 };
 local pUiBagsBar = CreateFrame(
-	'Frame',
-	'pUiBagsBar',
-	UIParent
+		'Frame',
+		'pUiBagsBar',
+		UIParent
 );
 pUiBagsBar:SetScale(config.micromenu.scale_bags);
 MainMenuBarBackpackButton:SetParent(pUiBagsBar);
@@ -53,17 +55,17 @@ function MainMenuMicroButtonMixin:bagbuttons_setup()
 	MainMenuBarBackpackButtonIconTexture:set_atlas('bag-main-2x')
 	MainMenuBarBackpackButton:SetClearPoint('BOTTOMRIGHT', HelpMicroButton, 'BOTTOMRIGHT', 0, 30)
 	MainMenuBarBackpackButton.SetPoint = addon._noop
-	
+
 	MainMenuBarBackpackButtonCount:SetClearPoint('CENTER', MainMenuBarBackpackButton, 'BOTTOM', 0, 14)
 	CharacterBag0Slot:SetClearPoint('RIGHT', MainMenuBarBackpackButton, 'LEFT', -14, -2)
-	
+
 	KeyRingButton:SetSize(34, 34)
 	KeyRingButton:SetClearPoint('RIGHT', CharacterBag3Slot, 'LEFT', -2, 0)
 	KeyRingButton:SetNormalTexture''
 	KeyRingButton:SetPushedTexture(nil)
 	KeyRingButton:SetHighlightTexture''
 	KeyRingButton:SetCheckedTexture''
-	
+
 	local highlight = KeyRingButton:GetHighlightTexture();
 	highlight:SetAllPoints();
 	highlight:SetBlendMode('ADD');
@@ -72,7 +74,7 @@ function MainMenuMicroButtonMixin:bagbuttons_setup()
 	KeyRingButton:GetNormalTexture():set_atlas('bag-reagent-border-2x')
 	KeyRingButton:GetCheckedTexture():set_atlas('bag-border-highlight-2x', true)
 	KeyRingButton:Hide();
-	
+
 	for _,bags in pairs(bagslots) do
 		bags:SetHighlightTexture''
 		bags:SetCheckedTexture''
@@ -82,7 +84,7 @@ function MainMenuMicroButtonMixin:bagbuttons_setup()
 
 		bags:GetCheckedTexture():set_atlas('bag-border-highlight-2x', true)
 		bags:GetCheckedTexture():SetDrawLayer('OVERLAY', 7)
-		
+
 		local highlight = bags:GetHighlightTexture();
 		highlight:SetAllPoints();
 		highlight:SetBlendMode('ADD');
@@ -94,19 +96,19 @@ function MainMenuMicroButtonMixin:bagbuttons_setup()
 		icon:SetPoint('TOPRIGHT', bags, 'TOPRIGHT', -5, -2.9);
 		icon:SetPoint('BOTTOMLEFT', bags, 'BOTTOMLEFT', 2.9, 5);
 		icon:SetTexCoord(.08,.92,.08,.92)
-		
+
 		local border = bags:CreateTexture(nil, 'OVERLAY')
 		border:SetPoint('CENTER')
 		border:set_atlas('bag-border-2x', true)
 		bags:GetCheckedTexture():SetAllPoints(border)
-		
+
 		local w, h = border:GetSize()
 		bags.background = bags:CreateTexture(nil, 'BACKGROUND')
 		bags.background:SetSize(w, h)
 		bags.background:SetPoint('CENTER')
 		bags.background:SetTexture(addon._dir..'bagslots2x')
 		bags.background:SetTexCoord(295/512, 356/512, 64/128, 125/128)
-		
+
 		local count = _G[bags:GetName()..'Count']
 		count:SetClearPoint('CENTER', 0, -10);
 		count:SetDrawLayer('OVERLAY')
@@ -132,7 +134,7 @@ addon.package:RegisterEvents(function(self)
 		end
 	end
 end,
-	'BAG_UPDATE', 'PLAYER_ENTERING_WORLD'
+		'BAG_UPDATE', 'PLAYER_ENTERING_WORLD'
 );
 
 do
@@ -189,7 +191,7 @@ do
 		end
 		collapse_state = checked
 	end)
-	
+
 	addon.package:RegisterEvents(function(self, event)
 		self:UnregisterEvent(event)
 		if not collapse_state then collapse_state = {} end
@@ -214,8 +216,8 @@ hooksecurefunc('MiniMapLFG_UpdateIsShown',function()
 	MiniMapLFGFrame.eye.texture:SetTexture(addon._dir..'uigroupfinderflipbookeye.tga')
 end)
 
-MiniMapLFGFrame:SetScript('OnClick',function(self, button)
-	local mode, submode = GetLFGMode();
+MiniMapLFGFrame:SetScript('OnClick',function(_, button)
+	local mode, _ = GetLFGMode();
 	if ( button == "RightButton" or mode == "lfgparty" or mode == "abandonedInDungeon") then
 		PlaySound("igMainMenuOpen");
 		local yOffset;
@@ -254,7 +256,7 @@ hooksecurefunc('CharacterMicroButton_SetNormal',function()
 	MicroButtonPortrait:SetAlpha(0);
 end)
 
-function MainMenuMicroButtonMixin:OnUpdate(elapsed)
+function MainMenuMicroButtonMixin:OnUpdate(_)
 	local _, _, latencyHome = GetNetStats();
 	local latency = latencyHome;
 	if ( latency > PERFORMANCEBAR_MEDIUM_LATENCY ) then
@@ -284,31 +286,39 @@ local function setupMicroButtons(xOffset)
 	local menu = CreateFrame('Frame', 'pUiMicroMenu', UIParent)
 	menu:SetScale(config.micromenu.scale_menu)
 	menu:SetSize(10, 10)
-	menu:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMRIGHT', xOffset, config.micromenu.y_position)
-	for _,button in pairs(MICRO_BUTTONS) do
+	menu:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMRIGHT', xOffset -90, config.micromenu.y_position)
+
+	local function setButtonTexture(button, state, atlasName)
+		local texture = button[state](button)
+		texture:set_atlas(atlasName)
+		texture:SetAllPoints(button)
+		return texture
+	end
+	for _, button in pairs(MICRO_BUTTONS) do
 		local buttonName = button:GetName():gsub('MicroButton', '')
-		local name = strlower(buttonName);
+		local name = strlower(buttonName)
 
-		button:texture_strip()
-
-		CharacterMicroButton:SetDisabledTexture'' -- doesn't exist by default
-		PVPMicroButton:SetDisabledTexture'' -- doesn't exist by default
+		CharacterMicroButton:SetDisabledTexture('')
+		PVPMicroButton:SetDisabledTexture('')
 		PVPMicroButton:GetDisabledTexture():set_atlas('ui-hud-micromenu-pvp-disabled-2x')
 
 		button:SetParent(pUiMicroMenu)
-		-- button:SetScale(1.4)
-		button:SetSize(14, 19)
+		button:SetSize(30, 39)
 		button:SetClearPoint('BOTTOMLEFT', pUiMicroMenu, 'BOTTOMRIGHT', buttonxOffset, 55)
 		button.SetPoint = addon._noop
-		button:SetHitRectInsets(0,0,0,0)
+		button:SetHitRectInsets(0, 0, 0, 0)
 
-		button:GetNormalTexture():set_atlas('ui-hud-micromenu-'..name..'-up-2x')
-		button:GetPushedTexture():set_atlas('ui-hud-micromenu-'..name..'-down-2x')
-		button:GetDisabledTexture():set_atlas('ui-hud-micromenu-'..name..'-disabled-2x')
-		button:GetHighlightTexture():set_atlas('ui-hud-micromenu-'..name..'-mouseover-2x')
-		button:GetHighlightTexture():SetBlendMode('ADD')
+		if name ~= "pathtoascension" and name ~= "challenges" then
+			button:texture_strip()
+			setButtonTexture(button, "GetNormalTexture", 'ui-hud-micromenu-' .. name .. '-up-2x')
+			setButtonTexture(button, "GetPushedTexture", 'ui-hud-micromenu-' .. name .. '-down-2x')
+			setButtonTexture(button, "GetDisabledTexture", 'ui-hud-micromenu-' .. name .. '-disabled-2x')
 
-		buttonxOffset = buttonxOffset + 24
+			local highlightTexture = setButtonTexture(button, "GetHighlightTexture", 'ui-hud-micromenu-' .. name .. '-mouseover-2x')
+			highlightTexture:SetBlendMode('ADD')
+		end
+
+		buttonxOffset = buttonxOffset + 30
 	end
 end
 
