@@ -1,8 +1,8 @@
 local addon = select(2, ...)
-local config = addon.config;
-local event = addon.package;
-local class = addon._class;
-local unpack = unpack;
+--local config = addon.config;
+--local event = addon.package;
+--local class = addon._class;
+--local unpack = unpack;
 local select = select;
 local pairs = pairs;
 local ipairs = ipairs;
@@ -13,8 +13,8 @@ local _G = getfenv(0);
 local UIFrameFlash = UIFrameFlash
 
 local ToggleCharacter = ToggleCharacter
-local ToggleSpellBook = ToggleSpellBook
-local ToggleTalentFrame = ToggleTalentFrame
+--local ToggleSpellBook = ToggleSpellBook
+--local ToggleTalentFrame = ToggleTalentFrame
 local ToggleAchievementFrame = ToggleAchievementFrame
 local ToggleFriendsFrame = ToggleFriendsFrame
 local ToggleHelpFrame = ToggleHelpFrame
@@ -37,7 +37,7 @@ do
     local LockButton
     local UnlockButton
     local CheckVisibility
-    local GetVisibilbleList
+    --local GetVisibilbleList
     local GrabMinimapButtons
     local SkinMinimapButton
     local UpdateLayout
@@ -335,7 +335,7 @@ do
         function del(t)
             if t then
                 setmetatable(t, nil)
-                for k, v in pairs(t) do
+                for k, _ in pairs(t) do
                     t[k] = nil
                 end
                 tinsert(list.cache, 1, t)
@@ -477,13 +477,6 @@ do
 end
 
 do
-    local backdrop = {
-        bgFile = [[Interface\ChatFrame\ChatFrameBackground]],
-        edgeFile = [[Interface\ChatFrame\ChatFrameBackground]],
-        edgeSize = 1,
-        insets = { top = 0, left = 0, bottom = 0, right = 0 }
-    }
-
     local menuFrame
 
     local menuList = {
@@ -586,7 +579,7 @@ do
     }
 
     -- handles mouse wheel action on minimap
-    local function Minimap_OnMouseWheel(self, z)
+    local function Minimap_OnMouseWheel(_, z)
         local c = Minimap:GetZoom()
         if z > 0 and c < 5 then
             Minimap:SetZoom(c + 1)
@@ -619,7 +612,7 @@ do
             ConsolidatedBuffs.SetPoint = addon._noop
         end
 
-        for i, v in pairs({
+        for _, v in pairs({
             MinimapBorder,
             MiniMapMailBorder,
             _G.QueueStatusMinimapButtonBorder,

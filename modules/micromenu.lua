@@ -1,7 +1,7 @@
 local addon = select(2,...);
 local config = addon.config;
 local pairs = pairs;
-local gsub = string.gsub;
+--local gsub = string.gsub;
 local UIParent = UIParent;
 local hooksecurefunc = hooksecurefunc;
 local _G = _G;
@@ -216,8 +216,8 @@ hooksecurefunc('MiniMapLFG_UpdateIsShown',function()
 	MiniMapLFGFrame.eye.texture:SetTexture(addon._dir..'uigroupfinderflipbookeye.tga')
 end)
 
-MiniMapLFGFrame:SetScript('OnClick',function(self, button)
-	local mode, submode = GetLFGMode();
+MiniMapLFGFrame:SetScript('OnClick',function(_, button)
+	local mode, _ = GetLFGMode();
 	if ( button == "RightButton" or mode == "lfgparty" or mode == "abandonedInDungeon") then
 		PlaySound("igMainMenuOpen");
 		local yOffset;
@@ -256,7 +256,7 @@ hooksecurefunc('CharacterMicroButton_SetNormal',function()
 	MicroButtonPortrait:SetAlpha(0);
 end)
 
-function MainMenuMicroButtonMixin:OnUpdate(elapsed)
+function MainMenuMicroButtonMixin:OnUpdate(_)
 	local _, _, latencyHome = GetNetStats();
 	local latency = latencyHome;
 	if ( latency > PERFORMANCEBAR_MEDIUM_LATENCY ) then
