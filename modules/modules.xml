@@ -8,4 +8,5 @@
 	<Script file="multicast.lua"/>
 	<Script file="micromenu.lua"/>
 	<Script file="cooldowns.lua"/>
+	<Script file="minimap.lua"/>
 </Ui>
