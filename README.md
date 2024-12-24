@@ -23,7 +23,6 @@
 ![WoW 2022-09-28 16-30-32-67](https://user-images.githubusercontent.com/33549022/192876821-4bd0813e-bd18-4b49-9fed-72063d731425.png)
 
 ## Install
-- **[Download latest](https://github.com/s0h2x/pretty_actionbar/releases/download/v1.0.3/pretty_actionbar.zip)** stable version
 - Extract zip file
 - Open this folder
 - Move sub folder to AddOns
